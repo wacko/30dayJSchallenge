@@ -18,28 +18,72 @@
     }
 
     // Regular
+    console.log('hello')
 
     // Interpolated
+    let poo =  '💩'
+    console.log('hello, I am a %s string', poo)
+    console.log(`hello, I am another ${poo} string`)
 
     // Styled
+    console.log('%ctext with red background', 'background: red; color: white')
 
     // warning!
+    console.warn('this is a warning')
 
     // Error :|
+    console.error('this is a error!!!')
 
     // Info
+    console.info('this is just info')
 
     // Testing
+    console.assert(dogs.length === 2, 'there should be 2 dogs')
+    console.assert(dogs.length === 3, 'there should be 3 dogs')
 
     // clearing
+    // console.clear()
 
     // Viewing DOM Elements
+    const p = document.querySelector('p')
+    console.log(p)
+    console.dir(p)
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`)
+      console.log(`This is ${dog.name}`)
+      console.log(`${dog.name} is ${dog.age} years old`)
+      console.groupEnd(`${dog.name}`)
+    })
 
     // counting
+    console.count('Uno')
+    console.count('Uno')
+    console.count('Dos')
+    console.count('Uno')
+    console.count('Tres')
+    console.count('Uno')
+    console.count('Dos')
+    console.count('Uno')
+    console.count('Tres')
+    console.count('Uno')
+    console.count('Uno')
+    console.count('Dos')
+    console.count('Tres')
+    console.count('Tres')
 
     // timing
+    console.time('fetching data')
+    const data = 
+    fetch('https://api.github.com/users/wesbos')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data')
+        console.log(data)
+      })
+
+    console.table(dogs)
 
   </script>
 </body>
