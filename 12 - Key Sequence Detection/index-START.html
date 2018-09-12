@@ -6,7 +6,34 @@
   <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
+
+<audio src="magic-wand.mp3"></audio>
 <script>
+  const short_code = '123'
+  const konami_code = 'ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightba'
+  const code_size = 10 // ↑ ↑ ↓ ↓ ← → ← → B A
+  const pressed = []
+  const audio = document.querySelector('audio')
+
+  console.log("Escribí '123' o el Konami Code (↑ ↑ ↓ ↓ ← → ← → B A)")
+
+  window.addEventListener('keyup', (e) => {
+    pressed.push(e.key)
+    pressed.splice(-code_size -1, pressed.length - code_size)
+
+    if (pressed.join('').endsWith(short_code)) {
+      cornify_add()
+    }
+
+    if (pressed.join('') === konami_code) {
+      for (var i = 1; i <= 10; i++) {
+        cornify_add()
+      }
+      console.log('DING DING !!!')
+      audio.play()
+    }
+
+  })
 </script>
 </body>
 </html>
