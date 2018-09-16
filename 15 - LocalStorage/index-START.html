@@ -22,14 +22,72 @@
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
+      <p>
+        <input type="button" data-action="check-all" value="Check all">
+        <input type="button" data-action="uncheck-all" value="Uncheck all">
+        <input type="button" data-action="clear" value="Clear list">
+      </p>
     </form>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+  const buttons = document.querySelectorAll('[type=button]');
 
+  function addItem(e) {
+    console.log('hello')
+    e.preventDefault()
+    const item = {
+      name: this.querySelector("[name=item]").value,
+      done: false
+    }
+    items.push(item)
+    populateList(items, itemsList)
+    localStorage.setItem('items', JSON.stringify(items))
+    this.reset()
+  }
+
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `<li>
+          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''}>
+          <label for="item${i}">${plate.name}</label>
+        </li>`
+    }).join('')
+  }
+
+  function toggleDone(e) {
+    if (!e.target.matches('input')) { return }
+    const i = e.target.dataset.index
+
+    const item = items[i]
+    item.done = !item.done
+
+    localStorage.setItem('items', JSON.stringify(items))
+  }
+
+  function updateList() {
+    switch(this.dataset.action) {
+      case 'check-all':
+        items.forEach(item => {item.done = true})
+        break;
+      case 'uncheck-all':
+        items.forEach(item => {item.done = false})
+        break;
+      case 'clear':
+        items.length = 0
+    }
+    populateList(items, itemsList)
+    localStorage.setItem('items', JSON.stringify(items))
+  }
+
+  addItems.addEventListener('submit', addItem)
+  itemsList.addEventListener('click', toggleDone)
+  buttons.forEach(button => { button.addEventListener('click', updateList) })
+
+  populateList(items, itemsList)
 </script>
 
 
