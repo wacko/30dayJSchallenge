@@ -182,6 +182,25 @@
     </li>
   </ul>
 <script>
+  function toSeconds(text) {
+    let [minutes, seconds] = text.split(':').map(parseFloat)
+    return minutes*60 + seconds
+  }
+
+  const videos = Array.from(document.querySelectorAll('li[data-time]'))
+
+  let secondsLeft = videos.
+    map(video => video.dataset.time).
+    map(time => toSeconds(time)).
+    reduce((acum, time) => acum + time, 0)
+  console.log(secondsLeft)
+
+  const hours = Math.floor(secondsLeft / 3600)
+  secondsLeft = secondsLeft % 3600
+  const minutes = Math.floor(secondsLeft / 60)
+  const seconds = secondsLeft % 60
+
+  console.log(hours, minutes, seconds)
 </script>
 </body>
 </html>
