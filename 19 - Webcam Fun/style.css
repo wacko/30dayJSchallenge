@@ -37,6 +37,10 @@ html {
   width:200px;
 }
 
+input[type=radio] {
+  margin-left: 1em;
+  margin-right: 0.5em;
+}
 /*
   Strip!
 */
