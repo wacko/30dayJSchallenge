@@ -3,15 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <title>Speech Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
 </head>
 <body>
 
+  <div class="what">
+    <img src="https://userscontent2.emaze.com/images/a512deae-c407-4f8b-b45c-1b5957cf3d14/fa475823e240be20a2965d05c973942a.jpg" width="472">
+  </div>
   <div class="words" contenteditable>
   </div>
 
+
 <script>
+  const what = document.querySelector('.what')
+
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const recognition = new SpeechRecognition()
+  recognition.interimResults = true
+
+  let p = document.createElement('p')
+  const words = document.querySelector('.words')
+
+  words.appendChild(p)
+
+  recognition.addEventListener('result', e => {
+    const transcript = Array.from(e.results)
+      .map(e => e[0].transcript)
+      .join('')
+
+    console.log('temp: ', transcript)
+    what.classList.remove('show')
+
+    p.textContent = transcript
+    if (e.results[0].isFinal) {
+      console.log('FINAL: ', transcript)
+      p = document.createElement('p')
+      words.appendChild(p)
+
+      if (transcript == 'what') {
+        what.classList.add('show')
+      }
+      if (transcript.includes('unicorn')) {
+        cornify_add()
+      }
+      if (transcript == 'clean up') {
+        document.querySelectorAll('p').forEach(e => e.remove())
+        p = document.createElement('p')
+        words.appendChild(p)
+      }
+    }
+  })
+
+  recognition.start()
+  recognition.addEventListener('end', recognition.start)
 
 </script>
 
@@ -26,6 +71,7 @@
       font-family: 'helvetica neue';
       font-weight: 200;
       font-size: 20px;
+      align-items: center;
     }
 
     .words {
@@ -54,6 +100,24 @@
       border: 1px solid;
       border-color: transparent #efe4e4;
     }
+
+    .what {
+      opacity: 0;
+      transition: opacity 2s;
+      position: absolute;
+      z-index: 1;
+      width: 100%;
+    }
+    .what img {
+      width: 472px;
+      margin: 0px auto;
+      display: block;
+    }
+    .show {
+      opacity: 1;
+      transition: opacity 0s;
+    }
+
   </style>
 
 </body>
