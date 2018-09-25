@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Understanding JavaScript's Capture</title>
 </head>
-<body class="bod">
+<body>
 
   <div class="one">
     <div class="two">
@@ -12,6 +12,8 @@
       </div>
     </div>
   </div>
+
+  <button>Click me</button>
 
 <style>
   html {
@@ -37,8 +39,25 @@
   }
 </style>
 
-<button></button>
 <script>
+  const elements = document.querySelectorAll('div')
+  const button = document.querySelector('button')
+
+  function logTextBubbling() {
+    console.log('Bubbling: ', this.tagName, this.classList.value ? `(${this.classList.value})` : '')
+  }
+
+  function logTextCapture() {
+    console.log('Capture: ', this.tagName, this.classList.value ? `(${this.classList.value})` : '')
+  }
+
+  function logOnce() {
+    console.log('this will be called just once!')
+  }
+
+  elements.forEach(elem => elem.addEventListener('click', logTextBubbling))
+  elements.forEach(elem => elem.addEventListener('click', logTextCapture, {capture: true}))
+  button.addEventListener('click', logOnce, {once: true})
 
 </script>
 </body>
